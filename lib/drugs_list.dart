@@ -1,7 +1,7 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:eiin_manager/drug_item.dart';
-import 'package:eiin_manager/drug_provider.dart';
+import 'package:eiin_manager/drug_model.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 
 class DrugsList extends StatefulWidget {
   @override
@@ -9,16 +9,28 @@ class DrugsList extends StatefulWidget {
 }
 
 class _DrugsListState extends State<DrugsList> {
-  var _future;
-  @override
-  void initState() {
-    super.initState();
-    _future = Provider.of<DrugsProvider>(context, listen: false).fetchDrugs();
+  List<Drug> drugs = [];
+  Future<void> fetchDrugs() async {
+    QuerySnapshot querySnapshot =
+        await FirebaseFirestore.instance.collection("Drugs").get();
+    if (drugs.isEmpty)
+      querySnapshot.docs.forEach((drugsData) {
+        List<String> ingredients = [];
+        drugsData['activeIngredients'].forEach((e) => ingredients.add(e));
+        drugs.add(Drug(
+            id: drugsData.id,
+            tradeName: drugsData['tradeName'],
+            unit: drugsData['unit'],
+            volumeUnit: drugsData['volumeUnit'],
+            activeIngredients: ingredients,
+            concentration: drugsData['concentration'],
+            price: drugsData['price'],
+            volume: drugsData['volume']));
+      });
   }
 
   @override
   Widget build(BuildContext context) {
-    final drugsProvider = Provider.of<DrugsProvider>(context, listen: false);
     return Scaffold(
       appBar: AppBar(
         iconTheme: IconThemeData(color: Colors.white),
@@ -28,16 +40,34 @@ class _DrugsListState extends State<DrugsList> {
         ),
       ),
       body: FutureBuilder(
-          future: _future,
+          future: fetchDrugs(),
           builder: (c, s) {
             if (s.connectionState == ConnectionState.waiting)
               return Center(child: CircularProgressIndicator());
             else
-              return ListView.builder(
-                itemCount: drugsProvider.drugs.length,
-                itemBuilder: (context, i) => DrugListItem(
-                  drug: drugsProvider.drugs[i],
-                ),
+              return Column(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  SizedBox(height: 16),
+                  Text(
+                    drugs.length.toString(),
+                    style: TextStyle(
+                        fontSize: 26,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.black),
+                  ),
+                  SizedBox(height: 16),
+                  Container(
+                    width: MediaQuery.of(context).size.width,
+                    height: MediaQuery.of(context).size.height * 0.75,
+                    child: ListView.builder(
+                      itemCount: drugs.length,
+                      itemBuilder: (context, i) => DrugListItem(
+                        drug: drugs[i],
+                      ),
+                    ),
+                  ),
+                ],
               );
           }),
     );

@@ -45,170 +45,200 @@ class _AddDrugState extends State<AddDrug> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text(
-          'Add Drug',
-          style: TextStyle(color: Colors.white),
+        appBar: AppBar(
+          title: Text(
+            'Add Drug',
+            style: TextStyle(color: Colors.white),
+          ),
+          actions: [
+            InkWell(
+                onTap: () {
+                  Navigator.push(context,
+                      MaterialPageRoute(builder: (context) => DrugsList()));
+                },
+                child: Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Icon(
+                    Icons.remove_red_eye,
+                    color: Colors.white,
+                  ),
+                ))
+          ],
         ),
-        actions: [
-          InkWell(
-              onTap: () {
-                Navigator.push(context,
-                    MaterialPageRoute(builder: (context) => DrugsList()));
-              },
-              child: Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Icon(
-                  Icons.remove_red_eye,
-                  color: Colors.white,
-                ),
-              ))
-        ],
-      ),
-      body: Padding(
-        padding: const EdgeInsets.all(8.0),
-        child: Form(
-          key: _form,
-          child: ListView(children: [
-            Container(
-              width: MediaQuery.of(context).size.width,
-              height: MediaQuery.of(context).size.height * 0.85,
-              child: ListView(
-                children: <Widget>[
-                  TextFormField(
-                    controller: _controllerTradeName,
-                    decoration: InputDecoration(labelText: 'Trade Name'),
-                    textInputAction: TextInputAction.next,
-                    cursorColor: Theme.of(context).primaryColor,
-                    onFieldSubmitted: (_) {
-                      FocusScope.of(context).requestFocus(_priceFocusNode);
-                    },
-                    validator: (val) {
-                      if (val.isEmpty) return "Field can't be empty";
-                      return null;
-                    },
-                  ),
-                  TextFormField(
-                    controller: _controllerPrice,
-                    decoration: InputDecoration(labelText: 'Price'),
-                    keyboardType: TextInputType.number,
-                    cursorColor: Theme.of(context).primaryColor,
-                    textInputAction: TextInputAction.next,
-                    focusNode: _priceFocusNode,
-                    onFieldSubmitted: (_) {
-                      FocusScope.of(context)
-                          .requestFocus(_concentrationFocusNode);
-                    },
-                    validator: (val) {
-                      if (val.isEmpty ||
-                          double.tryParse(val) == null ||
-                          double.parse(val) < 0.0)
-                        return "Field content is not valid";
-                      return null;
-                    },
-                  ),
-                  TextFormField(
-                    controller: _controllerConcentration,
-                    focusNode: _concentrationFocusNode,
-                    textInputAction: TextInputAction.next,
-                    cursorColor: Theme.of(context).primaryColor,
-                    decoration: InputDecoration(labelText: 'Concentration'),
-                    keyboardType: TextInputType.number,
-                    onFieldSubmitted: (_) {
-                      FocusScope.of(context).requestFocus(_unitFocusNode);
-                    },
-                    validator: (val) {
-                      if (val.isEmpty ||
-                          double.tryParse(val) == null ||
-                          double.parse(val) < 0.0)
-                        return "Field content is not valid";
-                      return null;
-                    },
-                  ),
-                  TextFormField(
-                    controller: _controllerUnit,
-                    decoration: InputDecoration(labelText: 'Unit'),
-                    focusNode: _unitFocusNode,
-                    cursorColor: Theme.of(context).primaryColor,
-                    textInputAction: TextInputAction.next,
-                    onFieldSubmitted: (_) {
-                      FocusScope.of(context).requestFocus(_volumeFocusNode);
-                    },
-                    validator: (val) {
-                      if (val.isEmpty) return "Field can't be empty";
-                      return null;
-                    },
-                  ),
-                  TextFormField(
-                    controller: _controllerVolume,
-                    focusNode: _volumeFocusNode,
-                    decoration: InputDecoration(labelText: 'Volume'),
-                    keyboardType: TextInputType.number,
-                    cursorColor: Theme.of(context).primaryColor,
-                    textInputAction: TextInputAction.next,
-                    onFieldSubmitted: (_) {
-                      FocusScope.of(context).requestFocus(_volumeUnitFocusNode);
-                    },
-                    validator: (val) {
-                      if (val.isEmpty ||
-                          double.tryParse(val) == null ||
-                          double.parse(val) < 0.0)
-                        return "Field content is not valid";
-                      return null;
-                    },
-                  ),
-                  TextFormField(
-                    controller: _controllerVolumeUnit,
-                    focusNode: _volumeUnitFocusNode,
-                    textInputAction: TextInputAction.done,
-                    decoration: InputDecoration(labelText: 'Volume Unit'),
-                    cursorColor: Theme.of(context).primaryColor,
-                    validator: (val) {
-                      if (val.isEmpty) return "Field content is not valid";
-                      return null;
-                    },
-                  ),
-                  SizedBox(height: 8),
-                  FloatingActionButton(
-                    onPressed: () {
-                      setState(() {
-                        ingredients.add(IngredientTextField());
-                      });
-                    },
-                    backgroundColor: Theme.of(context).primaryColor,
-                    child: Icon(
-                      Icons.add,
-                      color: Colors.white,
+        body: Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Form(
+            key: _form,
+            child: Row(
+              children: [
+                Container(
+                  height: 500,
+                  width: 400,
+                  child: ListView(children: [
+                    Container(
+                      width: 400,
+                      height: 500,
+                      child: ListView(
+                        children: <Widget>[
+                          TextFormField(
+                            controller: _controllerTradeName,
+                            decoration:
+                                InputDecoration(labelText: 'Trade Name'),
+                            textInputAction: TextInputAction.next,
+                            cursorColor: Theme.of(context).primaryColor,
+                            onFieldSubmitted: (_) {
+                              FocusScope.of(context)
+                                  .requestFocus(_priceFocusNode);
+                            },
+                            validator: (val) {
+                              if (val.isEmpty) return "Field can't be empty";
+                              return null;
+                            },
+                          ),
+                          TextFormField(
+                            controller: _controllerPrice,
+                            decoration: InputDecoration(labelText: 'Price'),
+                            keyboardType: TextInputType.number,
+                            cursorColor: Theme.of(context).primaryColor,
+                            textInputAction: TextInputAction.next,
+                            focusNode: _priceFocusNode,
+                            onFieldSubmitted: (_) {
+                              FocusScope.of(context)
+                                  .requestFocus(_concentrationFocusNode);
+                            },
+                            validator: (val) {
+                              if (val.isEmpty ||
+                                  double.tryParse(val) == null ||
+                                  double.parse(val) < 0.0)
+                                return "Field content is not valid";
+                              return null;
+                            },
+                          ),
+                          TextFormField(
+                            controller: _controllerConcentration,
+                            focusNode: _concentrationFocusNode,
+                            textInputAction: TextInputAction.next,
+                            cursorColor: Theme.of(context).primaryColor,
+                            decoration:
+                                InputDecoration(labelText: 'Concentration'),
+                            keyboardType: TextInputType.number,
+                            onFieldSubmitted: (_) {
+                              FocusScope.of(context)
+                                  .requestFocus(_unitFocusNode);
+                            },
+                            validator: (val) {
+                              if (val.isEmpty ||
+                                  double.tryParse(val) == null ||
+                                  double.parse(val) < 0.0)
+                                return "Field content is not valid";
+                              return null;
+                            },
+                          ),
+                          TextFormField(
+                            controller: _controllerUnit,
+                            decoration: InputDecoration(labelText: 'Unit'),
+                            focusNode: _unitFocusNode,
+                            cursorColor: Theme.of(context).primaryColor,
+                            textInputAction: TextInputAction.next,
+                            onFieldSubmitted: (_) {
+                              FocusScope.of(context)
+                                  .requestFocus(_volumeFocusNode);
+                            },
+                            validator: (val) {
+                              if (val.isEmpty) return "Field can't be empty";
+                              return null;
+                            },
+                          ),
+                          TextFormField(
+                            controller: _controllerVolume,
+                            focusNode: _volumeFocusNode,
+                            decoration: InputDecoration(labelText: 'Volume'),
+                            keyboardType: TextInputType.number,
+                            cursorColor: Theme.of(context).primaryColor,
+                            textInputAction: TextInputAction.next,
+                            onFieldSubmitted: (_) {
+                              FocusScope.of(context)
+                                  .requestFocus(_volumeUnitFocusNode);
+                            },
+                            validator: (val) {
+                              if (val.isEmpty ||
+                                  double.tryParse(val) == null ||
+                                  double.parse(val) < 0.0)
+                                return "Field content is not valid";
+                              return null;
+                            },
+                          ),
+                          TextFormField(
+                            controller: _controllerVolumeUnit,
+                            focusNode: _volumeUnitFocusNode,
+                            textInputAction: TextInputAction.done,
+                            decoration:
+                                InputDecoration(labelText: 'Volume Unit'),
+                            cursorColor: Theme.of(context).primaryColor,
+                            validator: (val) {
+                              if (val.isEmpty)
+                                return "Field content is not valid";
+                              return null;
+                            },
+                          ),
+                          SizedBox(height: 8),
+                          FloatingActionButton(
+                            onPressed: () {
+                              setState(() {
+                                ingredients.add(IngredientTextField());
+                              });
+                            },
+                            backgroundColor: Theme.of(context).primaryColor,
+                            child: Icon(
+                              Icons.add,
+                              color: Colors.white,
+                            ),
+                          ),
+                          Container(
+                              width: MediaQuery.of(context).size.width,
+                              height: MediaQuery.of(context).size.width * 0.4,
+                              child: ListView.builder(
+                                  itemCount: ingredients.length,
+                                  itemBuilder: (context, i) => ingredients[i])),
+                          loadingVisable
+                              ? LinearProgressIndicator(
+                                  backgroundColor: Colors.cyan[100],
+                                )
+                              : MaterialButton(
+                                  color: Theme.of(context).primaryColor,
+                                  child: Text('ADD',
+                                      style: TextStyle(color: Colors.white)),
+                                  onPressed: () async {
+                                    setState(() {
+                                      loadingVisable = true;
+                                    });
+                                    await _saveForm();
+                                  },
+                                ),
+                        ],
+                      ),
                     ),
-                  ),
-                  Container(
-                      width: MediaQuery.of(context).size.width,
-                      height: MediaQuery.of(context).size.width * 0.4,
-                      child: ListView.builder(
-                          itemCount: ingredients.length,
-                          itemBuilder: (context, i) => ingredients[i])),
-                  loadingVisable
-                      ? LinearProgressIndicator(
-                          backgroundColor: Colors.cyan[100],
-                        )
-                      : RaisedButton(
-                          color: Theme.of(context).primaryColor,
-                          child: Text('ADD',
-                              style: TextStyle(color: Colors.white)),
-                          onPressed: () async {
-                            setState(() {
-                              loadingVisable = true;
-                            });
-                            await _saveForm();
-                          },
-                        ),
-                ],
-              ),
+                  ]),
+                ),
+                Container(
+                  width: 200,
+                ),
+                MaterialButton(
+                  height: 100,
+                  minWidth: 100,
+                  color: Theme.of(context).primaryColor,
+                  child: Text('ADD', style: TextStyle(color: Colors.white)),
+                  onPressed: () async {
+                    setState(() {
+                      loadingVisable = true;
+                    });
+                    await _saveForm();
+                  },
+                ),
+              ],
             ),
-          ]),
-        ),
-      ),
-    );
+          ),
+        ));
   }
 
   _saveForm() async {

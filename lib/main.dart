@@ -1,5 +1,5 @@
-import 'package:eiin_manager/add_drug_form.dart';
-import 'package:eiin_manager/drug_provider.dart';
+import 'package:eiin_manager/providers/drug_provider.dart';
+import 'package:eiin_manager/screens/add_drug_form.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:provider/provider.dart';
